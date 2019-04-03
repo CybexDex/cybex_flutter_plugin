@@ -1,5 +1,6 @@
 import Flutter
 import UIKit
+import cybex_ios_core_cpp
 
 public class SwiftCybexFlutterPlugin: NSObject, FlutterPlugin {
   public static func register(with registrar: FlutterPluginRegistrar) {
@@ -9,6 +10,7 @@ public class SwiftCybexFlutterPlugin: NSObject, FlutterPlugin {
   }
 
   public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-    result("iOS " + UIDevice.current.systemVersion)
+    result(BitShareCoordinator.getUserKeys("xxx", password: "xx"))
+//    result("iOS " + UIDevice.current.systemVersion)
   }
 }
