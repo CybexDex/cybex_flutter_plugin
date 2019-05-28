@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'common.dart';
 
-class Order with ChainID {
+class Order with TransactionCommon {
     int refBlockNum;
     int refBlockPrefix;
     int txExpiration;

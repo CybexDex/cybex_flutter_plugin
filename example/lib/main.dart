@@ -39,10 +39,25 @@ class _MyAppState extends State<MyApp> {
       order.expiration = 1800;
       order.fillOrKill = 1;
 
-      String keys = await CybexFlutterPlugin.getUserKeyWith("cybex-test", "cybextest123456");
+      String keys = await CybexFlutterPlugin.getUserKeyWith(
+          "cybex-test", "cybextest123456");
       Order signedOpOrder =
           await CybexFlutterPlugin.limitOrderCreateOperation(order);
       platformVersion = signedOpOrder.toRawJson();
+
+      Commission commission = Commission();
+      commission.chainid = "0";
+      commission.refBlockNum = 22;
+      commission.refBlockPrefix = 11;
+      commission.txExpiration = 600;
+      commission.fee = AmountToSell(amount: 20, assetId: "2");
+      commission.from = "29";
+      commission.to = "34";
+      commission.amount = AmountToSell(amount: 100, assetId: "10");
+
+      Commission signedOpComm =
+          await CybexFlutterPlugin.transferOperation(commission);
+      platformVersion = signedOpComm.toRawJson();
     } on PlatformException {
       platformVersion = 'Failed to get platform version.';
     }

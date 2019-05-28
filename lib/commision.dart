@@ -2,7 +2,7 @@ import 'order.dart';
 import 'dart:convert';
 import 'common.dart';
 
-class Commission with ChainID {
+class Commission with TransactionCommon {
     int refBlockNum;
     int refBlockPrefix;
     int txExpiration;

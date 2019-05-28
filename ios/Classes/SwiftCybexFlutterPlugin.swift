@@ -31,10 +31,29 @@ public class SwiftCybexFlutterPlugin: NSObject, FlutterPlugin {
             result("null")
         }
     case MethodName.transfer.rawValue:
-        break
+        if let arguments = call.arguments as? Array<Any>, let jsonStr = arguments[0] as? String, let chainId = arguments[1] as? String {
+            let json = JSON(parseJSON: jsonStr)
+            let res = getTransferOperation(json: json, chainId: chainId)
+            result(res)
+        } else {
+            result("null")
+        }
     case MethodName.signMessage.rawValue:
-        break
+        if let arguments = call.arguments as? Array<Any>, let str = arguments[0] as? String {
+            let res = BitShareCoordinator.sign(str)
+            result(res)
+        }
+        else {
+            result("null")
+        }
     case MethodName.transactionId.rawValue:
+        if let arguments = call.arguments as? Array<Any>, let str = arguments[0] as? String {
+            let res = BitShareCoordinator.transactionId(fromSigned: str)
+            result(res)
+        }
+        else {
+            result("null")
+        }
         break
     case MethodName.getUserKey.rawValue:
         if let arguments = call.arguments as? Array<Any>, let username = arguments[0] as? String, let password = arguments[1] as? String {
@@ -45,16 +64,27 @@ public class SwiftCybexFlutterPlugin: NSObject, FlutterPlugin {
         }
 
     case MethodName.resetDefaultKey.rawValue:
-        break
+        if let arguments = call.arguments as? Array<Any>, let str = arguments[0] as? String {        BitShareCoordinator.resetDefaultPublicKey(str)
+            result(true)
+        }
+        else {
+            result(false)
+        }
     case MethodName.cancelDefaultKey.rawValue:
-        break
+        BitShareCoordinator.cancelUserKey()
+        result(true)
     default:
-        break
+        result("null")
     }
-    result("null")
   }
 
     func getLimitOrderOperation(json: JSON, chainId: String) -> String {
-        return BitShareCoordinator.getLimitOrder(json["refBlockNum"].int32Value, block_id: json["refBlockPrefix"].stringValue, expiration: json["txExpiration"].doubleValue, chain_id: chainId, user_id: json["seller"].int32Value, order_expiration: json["expiration"].doubleValue, asset_id: json["amountToSell"]["assetId"].int32Value, amount: json["amountToSell"]["assetId"].int64Value, receive_asset_id: json["minToReceive"]["assetId"].int32Value, receive_amount: json["minToReceive"]["assetId"].int64Value, fee_id: json["fee"]["assetId"].int32Value, fee_amount: json["fee"]["assetId"].int64Value, fillOrKill: true)
+        let res = BitShareCoordinator.getLimitOrder(json["refBlockNum"].int32Value, block_id: json["refBlockPrefix"].stringValue, expiration: json["txExpiration"].doubleValue, chain_id: chainId, user_id: json["seller"].int32Value, order_expiration: json["expiration"].doubleValue, asset_id: json["amountToSell"]["assetId"].int32Value, amount: json["amountToSell"]["amount"].int64Value, receive_asset_id: json["minToReceive"]["assetId"].int32Value, receive_amount: json["minToReceive"]["amount"].int64Value, fee_id: json["fee"]["assetId"].int32Value, fee_amount: json["fee"]["amount"].int64Value, fillOrKill: true)
+        return res
+    }
+
+    func getTransferOperation(json: JSON, chainId: String) -> String {
+        let res = BitShareCoordinator.getTransaction(json["refBlockNum"].int32Value, block_id: json["refBlockPrefix"].stringValue, expiration: json["txExpiration"].doubleValue, chain_id: chainId, from_user_id: json["from"].int32Value, to_user_id: json["to"].int32Value, asset_id: json["amount"]["assetId"].int32Value, receive_asset_id: json["amount"]["assetId"].int32Value, amount: json["amount"]["amount"].int64Value, fee_id: json["fee"]["assetId"].int32Value, fee_amount: json["fee"]["amount"].int64Value, memo: "", from_memo_key: "", to_memo_key: "")
+        return res
     }
 }
