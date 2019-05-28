@@ -1,0 +1,4 @@
+
+class ChainID {
+  String chainid;
+}
