@@ -40,8 +40,42 @@ class CybexFlutterPlugin {
     String trx = await _channel.invokeMethod(
         CybexFlutterPlugin.limitOrderCreate,
         [order.toRawJson(), order.chainid]);
+    print(trx);
+    if (Platform.isAndroid) {
+      var dict = json.decode(trx);
+      final op = dict["operations"][0][1];
+      dict["refBlockNum"] = dict["ref_block_num"];
+      dict["refBlockPrefix"] = dict["ref_block_prefix"];
+      if (dict["expiration"] is String) {
+        var date = DateTime.parse("${dict["expiration"]}Z");
+        dict["txExpiration"] = date.microsecondsSinceEpoch;
+      }
+      dict["fee"] = {
+        "assetId": op["fee"]["asset_id"],
+        "amount": op["fee"]["amount"]
+      };
+      dict["seller"] = op["seller"];
+      dict["amountToSell"] = {
+        "assetId": op["amount_to_sell"]["asset_id"],
+        "amount": op["amount_to_sell"]["amount"]
+      };
+      dict["minToReceive"] = {
+        "assetId": op["min_to_receive"]["asset_id"],
+        "amount": op["min_to_receive"]["amount"]
+      };
 
-    if (Platform.isIOS) {
+      if (op["expiration"] is String) {
+        var date = DateTime.parse("${op["expiration"]}Z");
+        dict["expiration"] = date.microsecondsSinceEpoch;
+      }
+      dict["fill_or_kill"] = (op["fill_or_kill"] as bool) ? 1 : 0;
+      dict["signature"] = dict["signatures"][0];
+      var trxid = await transactionIdOperation(trx);
+      print(trxid);
+      var order = Order.fromJson(dict);
+      order.transactionid = trxid;
+      return order;
+    } else if (Platform.isIOS) {
       var dict = json.decode(trx);
       final op = dict["operations"][0][1];
       dict["refBlockNum"] = dict["ref_block_num"];
@@ -88,7 +122,35 @@ class CybexFlutterPlugin {
   static Future<Commission> transferOperation(Commission commission) async {
     final String trx = await _channel.invokeMethod(CybexFlutterPlugin.transfer,
         [commission.toRawJson(), commission.chainid]);
-    if (Platform.isIOS) {
+    if (Platform.isAndroid) {
+      var dict = json.decode(trx);
+      final op = dict["operations"][0][1];
+      dict["refBlockNum"] = dict["ref_block_num"];
+      dict["refBlockPrefix"] = dict["ref_block_prefix"];
+      if (dict["expiration"] is String) {
+        var date = DateTime.parse("${dict["expiration"]}Z");
+        dict["txExpiration"] = date.microsecondsSinceEpoch;
+      }
+      dict["fee"] = {
+        "assetId": op["fee"]["asset_id"],
+        "amount": op["fee"]["amount"]
+      };
+      dict["from"] = op["from"];
+      dict["to"] = op["to"];
+
+      dict["amount"] = {
+        "assetId": op["amount"]["asset_id"],
+        "amount": op["amount"]["amount"]
+      };
+
+      dict["signature"] = dict["signatures"][0];
+
+      var txid = await transactionIdOperation(trx);
+      var comm = Commission.fromJson(dict);
+      comm.txId = txid;
+      comm.transactionid = txid;
+      return comm;
+    } else if (Platform.isIOS) {
       var dict = json.decode(trx);
       final op = dict["operations"][0][1];
       dict["refBlockNum"] = dict["ref_block_num"];
@@ -121,8 +183,8 @@ class CybexFlutterPlugin {
   }
 
   static Future<String> transactionIdOperation(String signedOp) async {
-    final String id =
-        await _channel.invokeMethod(CybexFlutterPlugin.transactionId, [signedOp]);
+    final String id = await _channel
+        .invokeMethod(CybexFlutterPlugin.transactionId, [signedOp]);
     return id;
   }
 }

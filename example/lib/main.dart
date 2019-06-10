@@ -32,10 +32,10 @@ class _MyAppState extends State<MyApp> {
       order.refBlockNum = 22;
       order.refBlockPrefix = 11;
       order.txExpiration = 600;
-      order.fee = AmountToSell(amount: 20, assetId: "2");
-      order.seller = "29";
-      order.amountToSell = AmountToSell(amount: 20, assetId: "2");
-      order.minToReceive = AmountToSell(amount: 10, assetId: "3");
+      order.fee = AmountToSell(amount: 20, assetId: "1.3.2");
+      order.seller = "1.2.29";
+      order.amountToSell = AmountToSell(amount: 20, assetId: "1.3.2");
+      order.minToReceive = AmountToSell(amount: 10, assetId: "1.3.3");
       order.expiration = 1800;
       order.fillOrKill = 1;
 
@@ -43,21 +43,21 @@ class _MyAppState extends State<MyApp> {
           "cybex-test", "cybextest123456");
       Order signedOpOrder =
           await CybexFlutterPlugin.limitOrderCreateOperation(order);
-      platformVersion = signedOpOrder.toRawJson();
+      platformVersion = signedOpOrder.transactionid.toString();
 
       Commission commission = Commission();
       commission.chainid = "0";
       commission.refBlockNum = 22;
       commission.refBlockPrefix = 11;
       commission.txExpiration = 600;
-      commission.fee = AmountToSell(amount: 20, assetId: "2");
-      commission.from = "29";
-      commission.to = "34";
-      commission.amount = AmountToSell(amount: 100, assetId: "10");
+      commission.fee = AmountToSell(amount: 20, assetId: "1.3.2");
+      commission.from = "1.2.29";
+      commission.to = "1.2.34";
+      commission.amount = AmountToSell(amount: 100, assetId: "1.3.2");
 
       Commission signedOpComm =
           await CybexFlutterPlugin.transferOperation(commission);
-      platformVersion = signedOpComm.toRawJson();
+      platformVersion = keys;
     } on PlatformException {
       platformVersion = 'Failed to get platform version.';
     }
