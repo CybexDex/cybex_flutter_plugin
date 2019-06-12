@@ -43,10 +43,6 @@ public class CybexFlutterPlugin implements MethodCallHandler {
       String chainId = arguments.get(1);
       Gson gson = new Gson();
       JsonObject jsonObject = gson.fromJson(json, JsonObject.class);
-      PrivateKey privateKey = PrivateKey.from_seed("cybex-test" + "active" + "cybextest123456");
-      Types.public_key_type publicActiveKeyType = new Types.public_key_type(privateKey.get_public_key(true), true);
-      Log.e("ss", publicActiveKeyType.toString());
-      WalletApi.getInstance().getUserKey("cybex-test", "cybextest123456");
       String limitOrder = WalletApi.getInstance().getLimitOrderSignedTransaction(
               jsonObject.get("refBlockNum").getAsLong(),
               jsonObject.get("refBlockPrefix").getAsLong(),
@@ -59,8 +55,7 @@ public class CybexFlutterPlugin implements MethodCallHandler {
               jsonObject.get("fee").getAsJsonObject().get("amount").getAsLong(),
               jsonObject.get("amountToSell").getAsJsonObject().get("amount").getAsLong(),
               jsonObject.get("minToReceive").getAsJsonObject().get("amount").getAsLong(),
-              1,
-              publicActiveKeyType.toString()
+              jsonObject.get("fill_or_kill").getAsInt()
               );
       result.success(limitOrder);
 
@@ -75,8 +70,6 @@ public class CybexFlutterPlugin implements MethodCallHandler {
       String chainId = arguments.get(1);
       Gson gson = new Gson();
       JsonObject jsonObject = gson.fromJson(json, JsonObject.class);
-      PrivateKey privateKey = PrivateKey.from_seed("cybex-test" + "active" + "cybextest123456");
-      Types.public_key_type publicActiveKeyType = new Types.public_key_type(privateKey.get_public_key(true), true);
       String transfer = WalletApi.getInstance().getTransferSignedTransaction(
               jsonObject.get("refBlockNum").getAsLong(),
               jsonObject.get("refBlockPrefix").getAsLong(),
@@ -90,12 +83,17 @@ public class CybexFlutterPlugin implements MethodCallHandler {
               jsonObject.get("fee").getAsJsonObject().get("amount").getAsLong(),
               "",
               "",
-              "",
-              publicActiveKeyType.toString(),
-              0
+              ""
               );
       result.success(transfer);
-
+    } else if (call.method.equals("resetDefaultKey")) {
+      List<String> arguments = call.arguments();
+      String pubKey = arguments.get(0);
+      boolean isReset = WalletApi.getInstance().resetDefaultPublicKey(pubKey);
+      result.success(isReset);
+    } else if (call.method.equals("cancelDefaultKey")) {
+      boolean isCancel = WalletApi.getInstance().cancelDefaultPublicKey();
+      result.success(isCancel);
     }
     else {
       result.notImplemented();

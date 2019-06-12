@@ -43,7 +43,7 @@ class _MyAppState extends State<MyApp> {
           "cybex-test", "cybextest123456");
       Order signedOpOrder =
           await CybexFlutterPlugin.limitOrderCreateOperation(order);
-      platformVersion = signedOpOrder.transactionid.toString();
+      platformVersion = signedOpOrder.toRawJson();
 
       Commission commission = Commission();
       commission.chainid = "0";
@@ -57,7 +57,6 @@ class _MyAppState extends State<MyApp> {
 
       Commission signedOpComm =
           await CybexFlutterPlugin.transferOperation(commission);
-      platformVersion = keys;
     } on PlatformException {
       platformVersion = 'Failed to get platform version.';
     }
