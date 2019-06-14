@@ -75,7 +75,7 @@ class CybexFlutterPlugin {
       var order = Order.fromJson(dict);
       order.transactionid = trxid;
       return order;
-    } else if (Platform.isIOS) {
+    } else {
       var dict = json.decode(trx);
       final op = dict["operations"][0][1];
       dict["refBlockNum"] = dict["ref_block_num"];
@@ -110,7 +110,6 @@ class CybexFlutterPlugin {
       order.transactionid = txid;
       return order;
     }
-    return Order.fromRawJson(trx);
   }
 
   static Future<String> signMessageOperation(String str) async {
@@ -150,7 +149,7 @@ class CybexFlutterPlugin {
       comm.txId = txid;
       comm.transactionid = txid;
       return comm;
-    } else if (Platform.isIOS) {
+    } else {
       var dict = json.decode(trx);
       final op = dict["operations"][0][1];
       dict["refBlockNum"] = dict["ref_block_num"];
@@ -179,7 +178,6 @@ class CybexFlutterPlugin {
       comm.transactionid = txid;
       return comm;
     }
-    return Commission.fromRawJson(trx);
   }
 
   static Future<String> transactionIdOperation(String signedOp) async {
