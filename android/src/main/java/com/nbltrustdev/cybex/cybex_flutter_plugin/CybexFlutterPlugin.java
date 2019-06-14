@@ -47,6 +47,7 @@ public class CybexFlutterPlugin implements MethodCallHandler {
               jsonObject.get("refBlockNum").getAsLong(),
               jsonObject.get("refBlockPrefix").getAsLong(),
               jsonObject.get("txExpiration").getAsLong(),
+              jsonObject.get("expiration").getAsLong(),
               chainId,
               jsonObject.get("seller").getAsString(),
               jsonObject.get("fee").getAsJsonObject().get("assetId").getAsString(),
