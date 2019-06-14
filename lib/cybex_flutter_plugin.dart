@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:cybex_flutter_plugin/utils/util.dart';
 import 'package:flutter/services.dart';
 import 'order.dart';
 import 'commision.dart';
@@ -37,6 +38,15 @@ class CybexFlutterPlugin {
   }
 
   static Future<Order> limitOrderCreateOperation(Order order) async {
+    if (Platform.isAndroid) {
+      order.amountToSell.assetId =
+          Utils.wrapId(order.amountToSell.assetId, ASSET);
+      order.fee.assetId = Utils.wrapId(order.fee.assetId, ASSET);
+      order.minToReceive.assetId =
+          Utils.wrapId(order.minToReceive.assetId, ASSET);
+      order.seller = Utils.wrapId(order.seller, ACCOUNT);
+    }
+
     String trx = await _channel.invokeMethod(
         CybexFlutterPlugin.limitOrderCreate,
         [order.toRawJson(), order.chainid]);
@@ -119,6 +129,13 @@ class CybexFlutterPlugin {
   }
 
   static Future<Commission> transferOperation(Commission commission) async {
+    if (Platform.isAndroid) {
+      commission.fee.assetId = Utils.wrapId(commission.fee.assetId, ASSET);
+      commission.from = Utils.wrapId(commission.from, ACCOUNT);
+      commission.to = Utils.wrapId(commission.to, ACCOUNT);
+      commission.amount.assetId =
+          Utils.wrapId(commission.amount.assetId, ASSET);
+    }
     final String trx = await _channel.invokeMethod(CybexFlutterPlugin.transfer,
         [commission.toRawJson(), commission.chainid]);
     if (Platform.isAndroid) {
