@@ -49,7 +49,7 @@ class CybexFlutterPlugin {
 
     String trx = await _channel.invokeMethod(
         CybexFlutterPlugin.limitOrderCreate,
-        [order.toRawJson(), order.chainid]);
+        [order.toRawJson(), order.chainid, order.refBlockId]);
     print(trx);
     if (Platform.isAndroid) {
       var dict = json.decode(trx);
@@ -58,7 +58,7 @@ class CybexFlutterPlugin {
       dict["refBlockPrefix"] = dict["ref_block_prefix"];
       if (dict["expiration"] is String) {
         var date = DateTime.parse("${dict["expiration"]}Z");
-        dict["txExpiration"] = date.microsecondsSinceEpoch;
+        dict["txExpiration"] = date.millisecondsSinceEpoch ~/ 1000;
       }
       dict["fee"] = {
         "assetId": op["fee"]["asset_id"],
@@ -76,7 +76,7 @@ class CybexFlutterPlugin {
 
       if (op["expiration"] is String) {
         var date = DateTime.parse("${op["expiration"]}Z");
-        dict["expiration"] = date.microsecondsSinceEpoch;
+        dict["expiration"] = date.millisecondsSinceEpoch ~/ 1000;
       }
       dict["fill_or_kill"] = (op["fill_or_kill"] as bool) ? 1 : 0;
       dict["signature"] = dict["signatures"][0];
@@ -92,7 +92,7 @@ class CybexFlutterPlugin {
       dict["refBlockPrefix"] = dict["ref_block_prefix"];
       if (dict["expiration"] is String) {
         var date = DateTime.parse("${dict["expiration"]}Z");
-        dict["txExpiration"] = date.microsecondsSinceEpoch;
+        dict["txExpiration"] = date.millisecondsSinceEpoch ~/ 1000;
       }
       dict["fee"] = {
         "assetId": op["fee"]["asset_id"],
@@ -110,7 +110,7 @@ class CybexFlutterPlugin {
 
       if (op["expiration"] is String) {
         var date = DateTime.parse("${op["expiration"]}Z");
-        dict["expiration"] = date.microsecondsSinceEpoch;
+        dict["expiration"] = date.millisecondsSinceEpoch ~/ 1000;
       }
       dict["fill_or_kill"] = (op["fill_or_kill"] as bool) ? 1 : 0;
       dict["signature"] = dict["signatures"][0];
@@ -137,7 +137,7 @@ class CybexFlutterPlugin {
           Utils.wrapId(commission.amount.assetId, ASSET);
     }
     final String trx = await _channel.invokeMethod(CybexFlutterPlugin.transfer,
-        [commission.toRawJson(), commission.chainid]);
+        [commission.toRawJson(), commission.chainid, commission.refBlockId]);
     if (Platform.isAndroid) {
       var dict = json.decode(trx);
       final op = dict["operations"][0][1];
@@ -145,7 +145,7 @@ class CybexFlutterPlugin {
       dict["refBlockPrefix"] = dict["ref_block_prefix"];
       if (dict["expiration"] is String) {
         var date = DateTime.parse("${dict["expiration"]}Z");
-        dict["txExpiration"] = date.microsecondsSinceEpoch;
+        dict["txExpiration"] = date.millisecondsSinceEpoch ~/ 1000;
       }
       dict["fee"] = {
         "assetId": op["fee"]["asset_id"],
@@ -173,7 +173,7 @@ class CybexFlutterPlugin {
       dict["refBlockPrefix"] = dict["ref_block_prefix"];
       if (dict["expiration"] is String) {
         var date = DateTime.parse("${dict["expiration"]}Z");
-        dict["txExpiration"] = date.microsecondsSinceEpoch;
+        dict["txExpiration"] = date.millisecondsSinceEpoch ~/ 1000;
       }
       dict["fee"] = {
         "assetId": op["fee"]["asset_id"],
