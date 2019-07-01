@@ -207,7 +207,11 @@ class CybexFlutterPlugin {
     var dict = json.decode(trx);
     var trxid = await transactionIdOperation(trx);
     comm.transactionid = trxid;
-    comm.sig = dict["signer"];
+    if (Platform.isIOS) {
+      comm.sig = dict["signer"];
+    } else if (Platform.isAndroid) {
+      comm.sig = dict["signature"][0];
+    }
     return comm;
   }
 

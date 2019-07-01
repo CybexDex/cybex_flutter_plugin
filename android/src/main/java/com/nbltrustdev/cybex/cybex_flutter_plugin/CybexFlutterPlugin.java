@@ -41,6 +41,7 @@ public class CybexFlutterPlugin implements MethodCallHandler {
       String json = arguments.get(0);
       Log.e("json", json);
       String chainId = arguments.get(1);
+      boolean isBuy = Boolean.valueOf(arguments.get(3));
       Gson gson = new Gson();
       JsonObject jsonObject = gson.fromJson(json, JsonObject.class);
       String limitOrder = WalletApi.getInstance().getLimitOrderSignedTransaction(
@@ -56,7 +57,8 @@ public class CybexFlutterPlugin implements MethodCallHandler {
               jsonObject.get("fee").getAsJsonObject().get("amount").getAsLong(),
               jsonObject.get("amountToSell").getAsJsonObject().get("amount").getAsLong(),
               jsonObject.get("minToReceive").getAsJsonObject().get("amount").getAsLong(),
-              jsonObject.get("fill_or_kill").getAsInt()
+              jsonObject.get("fill_or_kill").getAsInt(),
+              isBuy
               );
       result.success(limitOrder);
 
@@ -95,6 +97,19 @@ public class CybexFlutterPlugin implements MethodCallHandler {
     } else if (call.method.equals("cancelDefaultKey")) {
       boolean isCancel = WalletApi.getInstance().cancelDefaultPublicKey();
       result.success(isCancel);
+    } else if (call.method.equals("amendOrder")) {
+      List<String> arguments = call.arguments();
+      String json = arguments.get(0);
+      Gson gson = new Gson();
+      JsonObject jsonObject = gson.fromJson(json, JsonObject.class);
+      String amend = WalletApi.getInstance().getAmendSignature(
+              jsonObject.get("refBuyOrderTxId").getAsString(),
+              jsonObject.get("cutLossPx").getAsString(),
+              jsonObject.get("takeProfitPx").getAsString(),
+              jsonObject.get("execNowPx").getAsString(),
+              jsonObject.get("expiration").getAsString(),
+              jsonObject.get("seller").getAsString());
+      result.success(amend);
     }
     else {
       result.notImplemented();
