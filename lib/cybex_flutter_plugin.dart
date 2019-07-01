@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:cybex_flutter_plugin/common.dart';
 import 'package:cybex_flutter_plugin/utils/util.dart';
 import 'package:flutter/services.dart';
 import 'order.dart';
@@ -15,6 +16,7 @@ class CybexFlutterPlugin {
   static const String getUserKey = "getUserKey";
   static const String resetDefaultKey = "resetDefaultKey";
   static const String cancelDefaultKey = "cancelDefaultKey";
+  static const String amendOrder = "amendOrder";
 
   static const MethodChannel _channel =
       const MethodChannel('cybex_flutter_plugin');
@@ -37,7 +39,8 @@ class CybexFlutterPlugin {
     return res;
   }
 
-  static Future<Order> limitOrderCreateOperation(Order order) async {
+  static Future<Order> limitOrderCreateOperation(
+      Order order, bool isBuy) async {
     if (Platform.isAndroid) {
       order.amountToSell.assetId =
           Utils.wrapId(order.amountToSell.assetId, ASSET);
@@ -49,7 +52,7 @@ class CybexFlutterPlugin {
 
     String trx = await _channel.invokeMethod(
         CybexFlutterPlugin.limitOrderCreate,
-        [order.toRawJson(), order.chainid, order.refBlockId]);
+        [order.toRawJson(), order.chainid, order.refBlockId, isBuy]);
     print(trx);
     if (Platform.isAndroid) {
       var dict = json.decode(trx);
@@ -195,6 +198,17 @@ class CybexFlutterPlugin {
       comm.transactionid = txid;
       return comm;
     }
+  }
+
+  static Future<TransactionCommon> amendOrderOperation(String jsonstr) async {
+    TransactionCommon comm;
+    final String trx =
+        await _channel.invokeMethod(CybexFlutterPlugin.amendOrder, [jsonstr]);
+    var dict = json.decode(trx);
+    var trxid = await transactionIdOperation(trx);
+    comm.transactionid = trxid;
+    comm.sig = dict["signer"];
+    return comm;
   }
 
   static Future<String> transactionIdOperation(String signedOp) async {

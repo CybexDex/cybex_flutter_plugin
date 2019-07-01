@@ -11,6 +11,7 @@ enum MethodName:String {
     case getUserKey
     case resetDefaultKey
     case cancelDefaultKey
+    case amendOrder
 }
 
 public class SwiftCybexFlutterPlugin: NSObject, FlutterPlugin {
@@ -23,9 +24,9 @@ public class SwiftCybexFlutterPlugin: NSObject, FlutterPlugin {
   public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
     switch call.method {
     case MethodName.limitOrderCreate.rawValue:
-        if let arguments = call.arguments as? Array<Any>, let jsonStr = arguments[0] as? String, let chainId = arguments[1] as? String, let blockId = arguments[2] as? String {
+        if let arguments = call.arguments as? Array<Any>, let jsonStr = arguments[0] as? String, let chainId = arguments[1] as? String, let blockId = arguments[2] as? String, let isBuy = arguments[3] as? Bool {
             let json = JSON(parseJSON: jsonStr)
-            let res = getLimitOrderOperation(json: json, chainId: chainId, blockId: blockId)
+            let res = getLimitOrderOperation(json: json, chainId: chainId, blockId: blockId, isBuy: isBuy)
             result(res)
         } else {
             result("null")
@@ -73,13 +74,22 @@ public class SwiftCybexFlutterPlugin: NSObject, FlutterPlugin {
     case MethodName.cancelDefaultKey.rawValue:
         BitShareCoordinator.cancelUserKey()
         result(true)
+    case MethodName.amendOrder.rawValue:
+        if let arguments = call.arguments as? Array<Any>, let jsonStr = arguments[0] as? String {
+            let json = JSON(parseJSON: jsonStr)
+            let res = NXSig.amendOrder(with: json["refBuyOrderTxId"].stringValue, cutLossPx: json["cutLossPx"].stringValue, takeProfitPx: json["takeProfitPx"].stringValue, execNowPx: json["execNowPx"].stringValue, expiration: json["expiration"].stringValue, seller: json["seller"].stringValue)
+            result(res)
+        } else {
+            result("null")
+        }
+
     default:
         result("null")
     }
   }
 
-    func getLimitOrderOperation(json: JSON, chainId: String, blockId:String) -> String {
-        let res = BitShareCoordinator.getLimitOrder(json["refBlockNum"].int32Value, block_id: blockId, expiration: json["txExpiration"].doubleValue, chain_id: chainId, user_id: json["seller"].int32Value, order_expiration: json["expiration"].doubleValue, asset_id: json["amountToSell"]["assetId"].int32Value, amount: json["amountToSell"]["amount"].int64Value, receive_asset_id: json["minToReceive"]["assetId"].int32Value, receive_amount: json["minToReceive"]["amount"].int64Value, fee_id: json["fee"]["assetId"].int32Value, fee_amount: json["fee"]["amount"].int64Value, fillOrKill: true)
+    func getLimitOrderOperation(json: JSON, chainId: String, blockId:String, isBuy:Bool) -> String {
+        let res = BitShareCoordinator.getLimitOrder(bySide: isBuy, block_num:json["refBlockNum"].int32Value, block_id: blockId, expiration: json["txExpiration"].doubleValue, chain_id: chainId, user_id: json["seller"].int32Value, order_expiration: json["expiration"].doubleValue, asset_id: json["amountToSell"]["assetId"].int32Value, amount: json["amountToSell"]["amount"].int64Value, receive_asset_id: json["minToReceive"]["assetId"].int32Value, receive_amount: json["minToReceive"]["amount"].int64Value, fee_id: json["fee"]["assetId"].int32Value, fee_amount: json["fee"]["amount"].int64Value, fillOrKill: true)
         return res
     }
 
