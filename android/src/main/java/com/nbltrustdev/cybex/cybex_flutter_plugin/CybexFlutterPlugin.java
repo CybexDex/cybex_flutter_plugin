@@ -37,11 +37,11 @@ public class CybexFlutterPlugin implements MethodCallHandler {
       List<String> arguments = call.arguments();
       result.success(WalletApi.getInstance().getUserKey(arguments.get(0), arguments.get(1)));
     } else if (call.method.equals("limitOrderCreate")) {
-      List<String> arguments = call.arguments();
-      String json = arguments.get(0);
+      List<Object> arguments = call.arguments();
+      String json = (String) arguments.get(0);
       Log.e("json", json);
-      String chainId = arguments.get(1);
-      boolean isBuy = Boolean.valueOf(arguments.get(3));
+      String chainId = (String) arguments.get(1);
+      boolean isBuy = (boolean) arguments.get(3);
       Gson gson = new Gson();
       JsonObject jsonObject = gson.fromJson(json, JsonObject.class);
       String limitOrder = WalletApi.getInstance().getLimitOrderSignedTransaction(
