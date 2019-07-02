@@ -26,6 +26,17 @@ class _MyAppState extends State<MyApp> {
   Future<void> initPlatformState() async {
     String platformVersion;
     // Platform messages may fail, so we use a try/catch PlatformException.
+
+    try {
+      final str = """
+      {"transactionType":"NxAmend","seller":"28828","refBuyOrderTxId":"e62a6523dbadde64171313b4b0fd6d3ccc760c4d","signature":null,"takeProfitPx":"50","cutLossPx":"50","txId":null,"execNowPx":"0","expiration":0}
+      """;
+      String keys = await CybexFlutterPlugin.getUserKeyWith(
+          "cybex-test", "cybextest123456");
+      final result = await CybexFlutterPlugin.amendOrderOperation(str);
+      
+    } catch (_) {}
+
     try {
       final Order order = Order();
       order.chainid = "0";

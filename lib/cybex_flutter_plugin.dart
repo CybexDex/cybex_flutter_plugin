@@ -201,9 +201,10 @@ class CybexFlutterPlugin {
   }
 
   static Future<TransactionCommon> amendOrderOperation(String jsonstr) async {
-    TransactionCommon comm;
+    TransactionCommon comm = TransactionCommon();
     final String trx =
         await _channel.invokeMethod(CybexFlutterPlugin.amendOrder, [jsonstr]);
+        
     var dict = json.decode(trx);
     var trxid = await transactionIdOperation(trx);
     comm.transactionid = trxid;
