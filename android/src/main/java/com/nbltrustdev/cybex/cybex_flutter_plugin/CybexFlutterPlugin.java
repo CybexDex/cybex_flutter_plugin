@@ -110,6 +110,11 @@ public class CybexFlutterPlugin implements MethodCallHandler {
               jsonObject.get("expiration").getAsString(),
               jsonObject.get("seller").getAsString());
       result.success(amend);
+    } else if (call.method.equals("signMessage")) {
+      List<String> arguments = call.arguments();
+      String param = arguments.get(0);
+      String signMessage = WalletApi.getInstance().signMessage(param);
+      result.success(signMessage);
     }
     else {
       result.notImplemented();
