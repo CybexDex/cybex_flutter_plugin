@@ -75,9 +75,8 @@ public class SwiftCybexFlutterPlugin: NSObject, FlutterPlugin {
         BitShareCoordinator.cancelUserKey()
         result(true)
     case MethodName.amendOrder.rawValue:
-        if let arguments = call.arguments as? Array<Any>, let jsonStr = arguments[0] as? String {
-            let json = JSON(parseJSON: jsonStr)
-            let res = NXSig.amendOrder(with: json["refBuyOrderTxId"].stringValue, cutLossPx: json["cutLossPx"].stringValue, takeProfitPx: json["takeProfitPx"].stringValue, execNowPx: json["execNowPx"].stringValue, expiration: json["expiration"].stringValue, seller: json["seller"].stringValue)
+        if let arguments = call.arguments as? Array<Any>, let ss = arguments[0] as? String {
+            let res = NXSig.amendOrder(with: ss)
             result(res)
         } else {
             result("null")
