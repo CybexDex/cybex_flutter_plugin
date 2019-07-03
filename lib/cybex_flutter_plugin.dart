@@ -204,15 +204,18 @@ class CybexFlutterPlugin {
     TransactionCommon comm = TransactionCommon();
     final String trx =
         await _channel.invokeMethod(CybexFlutterPlugin.amendOrder, [jsonstr]);
-        
+    print(trx);
+
     var dict = json.decode(trx);
     var trxid = await transactionIdOperation(trx);
     comm.transactionid = trxid;
+    print(comm.transactionid);
     if (Platform.isIOS) {
       comm.sig = dict["signer"];
     } else if (Platform.isAndroid) {
-      comm.sig = dict["signature"][0];
+      comm.sig = dict["signatures"][0];
     }
+    print(comm.sig);
     return comm;
   }
 
