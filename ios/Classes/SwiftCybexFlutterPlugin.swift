@@ -12,6 +12,7 @@ enum MethodName:String {
     case resetDefaultKey
     case cancelDefaultKey
     case amendOrder
+    case setDefaultPrivateKey
 }
 
 public class SwiftCybexFlutterPlugin: NSObject, FlutterPlugin {
@@ -74,6 +75,13 @@ public class SwiftCybexFlutterPlugin: NSObject, FlutterPlugin {
     case MethodName.cancelDefaultKey.rawValue:
         BitShareCoordinator.cancelUserKey()
         result(true)
+    case MethodName.setDefaultPrivateKey.rawValue:
+        if let arguments = call.arguments as? Array<Any>, let str = arguments[0] as? String {
+            BitShareCoordinator.setDefaultPrivateKey(str)
+            result(true)
+        } else {
+            result(false)
+        }
     case MethodName.amendOrder.rawValue:
         if let arguments = call.arguments as? Array<Any>, let ss = arguments[0] as? String {
             let res = NXSig.amendOrder(with: ss)

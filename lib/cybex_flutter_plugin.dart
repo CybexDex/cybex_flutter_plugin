@@ -17,6 +17,7 @@ class CybexFlutterPlugin {
   static const String resetDefaultKey = "resetDefaultKey";
   static const String cancelDefaultKey = "cancelDefaultKey";
   static const String amendOrder = "amendOrder";
+  static const String setDefaultPrivateKey = "setDefaultPrivateKey";
 
   static const MethodChannel _channel =
       const MethodChannel('cybex_flutter_plugin');
@@ -36,6 +37,12 @@ class CybexFlutterPlugin {
   static Future<bool> cancelDefaultPubKey() async {
     final bool res =
         await _channel.invokeMethod(CybexFlutterPlugin.cancelDefaultKey);
+    return res;
+  }
+
+  static Future<bool> setDefaultPrivKey() async {
+    final bool res =
+        await _channel.invokeMethod(CybexFlutterPlugin.setDefaultPrivateKey);
     return res;
   }
 
