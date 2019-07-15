@@ -40,9 +40,9 @@ class CybexFlutterPlugin {
     return res;
   }
 
-  static Future<bool> setDefaultPrivKey() async {
-    final bool res =
-        await _channel.invokeMethod(CybexFlutterPlugin.setDefaultPrivateKey);
+  static Future<bool> setDefaultPrivKey(String priKey) async {
+    final bool res = await _channel
+        .invokeMethod(CybexFlutterPlugin.setDefaultPrivateKey, [priKey]);
     return res;
   }
 
