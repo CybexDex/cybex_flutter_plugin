@@ -66,6 +66,5 @@ android {
         implementation 'org.bitcoinj:bitcoinj-core:0.14.7'
         implementation 'com.github.bilthon:graphenej:0.4.2'
         implementation 'com.fasterxml.jackson.core:jackson-databind:2.6.3'
-        implementation 'com.belerweb:pinyin4j:2.5.0'
     }
 }
