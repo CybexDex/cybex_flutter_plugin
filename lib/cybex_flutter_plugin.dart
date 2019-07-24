@@ -18,6 +18,7 @@ class CybexFlutterPlugin {
   static const String cancelDefaultKey = "cancelDefaultKey";
   static const String amendOrder = "amendOrder";
   static const String setDefaultPrivateKey = "setDefaultPrivateKey";
+  static const String signStream = "signStream";
 
   static const MethodChannel _channel =
       const MethodChannel('cybex_flutter_plugin');
@@ -135,6 +136,12 @@ class CybexFlutterPlugin {
   static Future<String> signMessageOperation(String str) async {
     final String signature =
         await _channel.invokeMethod(CybexFlutterPlugin.signMessage, [str]);
+    return signature;
+  }
+
+  static Future<String> signStreamOperation(String stream) async {
+    final String signature =
+        await _channel.invokeMethod(CybexFlutterPlugin.signStream, [stream]);
     return signature;
   }
 

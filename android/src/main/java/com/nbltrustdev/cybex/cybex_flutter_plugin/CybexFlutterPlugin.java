@@ -115,6 +115,12 @@ public class CybexFlutterPlugin implements MethodCallHandler {
       String param = arguments.get(0);
       String signMessage = WalletApi.getInstance().signMessage(param);
       result.success(signMessage);
+    } else if (call.method.equals("signStream")) {
+      List<String> arguments = call.arguments();
+      String param = arguments.get(0);
+      String signStream = WalletApi.getInstance().signMessageStream(param);
+      result.success(signStream);
+
     } else if (call.method.equals("setDefaultPrivateKey")) {
       List<String> arguments = call.arguments();
       String privKey = arguments.get(0);
