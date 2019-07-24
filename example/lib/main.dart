@@ -1,3 +1,4 @@
+import 'package:cybex_flutter_plugin_example/test.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 
@@ -26,6 +27,8 @@ class _MyAppState extends State<MyApp> {
   Future<void> initPlatformState() async {
     String platformVersion;
     // Platform messages may fail, so we use a try/catch PlatformException.
+
+    test();
 
     try {
       final str = "sss";
