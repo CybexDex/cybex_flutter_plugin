@@ -7,6 +7,7 @@ enum MethodName:String {
     case limitOrderCreate
     case transfer
     case signMessage
+    case signStream
     case transactionId
     case getUserKey
     case resetDefaultKey
@@ -43,6 +44,14 @@ public class SwiftCybexFlutterPlugin: NSObject, FlutterPlugin {
     case MethodName.signMessage.rawValue:
         if let arguments = call.arguments as? Array<Any>, let str = arguments[0] as? String {
             let res = BitShareCoordinator.sign(str)
+            result(res)
+        }
+        else {
+            result("null")
+        }
+    case MethodName.signStream.rawValue:
+        if let arguments = call.arguments as? Array<Any>, let str = arguments[0] as? String {
+            let res = BitShareCoordinator.sign(fromHex: str)
             result(res)
         }
         else {
