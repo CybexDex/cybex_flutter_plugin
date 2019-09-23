@@ -16,7 +16,7 @@ A new Flutter plugin with cybex crypto
   s.public_header_files = 'Classes/**/*.h'
   s.dependency 'Flutter'
 
-  s.ios.deployment_target = '10.0'
+  s.ios.deployment_target = '11.0'
   
   s.xcconfig = { 'FRAMEWORK_SEARCH_PATHS' => '$(PROJECT_DIR)/../ $(PROJECT_DIR)/../Frameworks $(PROJECT_DIR)/../Carthage/Build/iOS' }
   s.frameworks = 'cybex_ios_core_cpp', 'SwiftyJSON'
