@@ -28,14 +28,14 @@ class _MyAppState extends State<MyApp> {
     String platformVersion;
     // Platform messages may fail, so we use a try/catch PlatformException.
 
-    test();
+    // test();
 
-    try {
-      final str = "sss";
-      String keys = await CybexFlutterPlugin.getUserKeyWith(
-          "cybex-test", "cybextest123456");
-      final result = await CybexFlutterPlugin.amendOrderOperation(str);
-    } catch (_) {}
+    // try {
+    //   final str = "sss";
+    //   String keys = await CybexFlutterPlugin.getUserKeyWith(
+    //       "cybex-test", "cybextest123456");
+    //   final result = await CybexFlutterPlugin.amendOrderOperation(str);
+    // } catch (_) {}
 
     try {
       final Order order = Order();
@@ -52,19 +52,20 @@ class _MyAppState extends State<MyApp> {
 
       String keys = await CybexFlutterPlugin.getUserKeyWith(
           "cybex-test", "cybextest123456");
-      Order signedOpOrder =
-          await CybexFlutterPlugin.limitOrderCreateOperation(order, true);
-      platformVersion = signedOpOrder.toRawJson();
+      // Order signedOpOrder =
+      //     await CybexFlutterPlugin.limitOrderCreateOperation(order, true);
+      // platformVersion = signedOpOrder.toRawJson();
 
       Commission commission = Commission();
-      commission.chainid = "0";
-      commission.refBlockNum = 22;
-      commission.refBlockPrefix = 11;
-      commission.txExpiration = 600;
-      commission.fee = AmountToSell(amount: 20, assetId: "1.3.2");
-      commission.from = "1.2.29";
-      commission.to = "1.2.34";
-      commission.amount = AmountToSell(amount: 100, assetId: "1.3.2");
+      commission.chainid =
+          "90be01e82b981c8f201c9a78a3d31f655743b29ff3274727b1439b093d04aa23";
+      commission.refBlockNum = 3635;
+      commission.refBlockPrefix = 1746772012;
+      commission.txExpiration = 1569297278;
+      commission.fee = AmountToSell(amount: 20, assetId: "2");
+      commission.from = "29";
+      commission.to = "34";
+      commission.amount = AmountToSell(amount: 100, assetId: "2");
 
       Commission signedOpComm =
           await CybexFlutterPlugin.transferOperation(commission);
