@@ -158,6 +158,7 @@ class CybexFlutterPlugin {
         [commission.toRawJson(), commission.chainid, commission.refBlockId]);
     if (Platform.isAndroid) {
       var dict = json.decode(trx);
+      return dict;
       final op = dict["operations"][0][1];
       dict["refBlockNum"] = dict["ref_block_num"];
       dict["refBlockPrefix"] = dict["ref_block_prefix"];

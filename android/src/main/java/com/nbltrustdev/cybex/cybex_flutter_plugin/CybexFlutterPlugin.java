@@ -71,12 +71,13 @@ public class CybexFlutterPlugin implements MethodCallHandler {
       List<String> arguments = call.arguments();
       String json = arguments.get(0);
       String chainId = arguments.get(1);
+      String blockId = arguments.get(2);
       Gson gson = new Gson();
       JsonObject jsonObject = gson.fromJson(json, JsonObject.class);
       String transfer = WalletApi.getInstance().getTransferSignedTransaction(
               jsonObject.get("refBlockNum").getAsLong(),
-              jsonObject.get("refBlockPrefix").getAsLong(),
               jsonObject.get("txExpiration").getAsLong(),
+              blockId,
               chainId,
               jsonObject.get("from").getAsString(),
               jsonObject.get("to").getAsString(),
