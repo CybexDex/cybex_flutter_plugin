@@ -67,8 +67,8 @@ class _MyAppState extends State<MyApp> {
       commission.to = "34";
       commission.amount = AmountToSell(amount: 100, assetId: "2");
 
-      Commission signedOpComm =
-          await CybexFlutterPlugin.transferOperation(commission);
+      // Commission signedOpComm =
+      //     await CybexFlutterPlugin.transferOperation(commission);
     } on PlatformException {
       platformVersion = 'Failed to get platform version.';
     }

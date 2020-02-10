@@ -12,18 +12,19 @@ class Commission with TransactionCommon {
   AmountToSell amount;
   String signature;
   String txId;
+  String assetId;
 
-  Commission({
-    this.refBlockNum,
-    this.refBlockPrefix,
-    this.txExpiration,
-    this.fee,
-    this.from,
-    this.to,
-    this.amount,
-    this.signature,
-    this.txId,
-  });
+  Commission(
+      {this.refBlockNum,
+      this.refBlockPrefix,
+      this.txExpiration,
+      this.fee,
+      this.from,
+      this.to,
+      this.amount,
+      this.signature,
+      this.txId,
+      this.assetId});
 
   factory Commission.fromRawJson(String str) =>
       Commission.fromJson(json.decode(str));

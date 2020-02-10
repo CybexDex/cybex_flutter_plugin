@@ -145,7 +145,8 @@ class CybexFlutterPlugin {
     return signature;
   }
 
-  static Future<Commission> transferOperation(Commission commission) async {
+  static Future<Map<String, dynamic>> transferOperation(
+      Commission commission) async {
     if (Platform.isAndroid) {
       commission.fee.assetId = Utils.wrapId(commission.fee.assetId, ASSET);
       commission.from = Utils.wrapId(commission.from, ACCOUNT);
@@ -182,7 +183,7 @@ class CybexFlutterPlugin {
       var comm = Commission.fromJson(dict);
       comm.txId = txid;
       comm.transactionid = txid;
-      return comm;
+      return dict;
     } else {
       var dict = json.decode(trx);
       final op = dict["operations"][0][1];
@@ -210,7 +211,7 @@ class CybexFlutterPlugin {
       var comm = Commission.fromJson(dict);
       comm.txId = txid;
       comm.transactionid = txid;
-      return comm;
+      return dict;
     }
   }
 
