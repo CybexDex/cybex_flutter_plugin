@@ -13,6 +13,7 @@ class Commission with TransactionCommon {
   String signature;
   String txId;
   String assetId;
+  bool isTwo;
 
   Commission(
       {this.refBlockNum,
@@ -24,7 +25,8 @@ class Commission with TransactionCommon {
       this.amount,
       this.signature,
       this.txId,
-      this.assetId});
+      this.assetId,
+      this.isTwo});
 
   factory Commission.fromRawJson(String str) =>
       Commission.fromJson(json.decode(str));
@@ -32,16 +34,17 @@ class Commission with TransactionCommon {
   String toRawJson() => json.encode(toJson());
 
   factory Commission.fromJson(Map<String, dynamic> json) => new Commission(
-        refBlockNum: json["refBlockNum"],
-        refBlockPrefix: json["refBlockPrefix"],
-        txExpiration: json["txExpiration"],
-        fee: AmountToSell.fromJson(json["fee"]),
-        from: json["from"],
-        to: json["to"],
-        amount: AmountToSell.fromJson(json["amount"]),
-        signature: json["signature"],
-        txId: json["txId"],
-      );
+      refBlockNum: json["refBlockNum"],
+      refBlockPrefix: json["refBlockPrefix"],
+      txExpiration: json["txExpiration"],
+      fee: AmountToSell.fromJson(json["fee"]),
+      from: json["from"],
+      to: json["to"],
+      amount: AmountToSell.fromJson(json["amount"]),
+      signature: json["signature"],
+      txId: json["txId"],
+      assetId: json["assetId"],
+      isTwo: json["isTwo"]);
 
   Map<String, dynamic> toJson() => {
         "refBlockNum": refBlockNum,
@@ -53,5 +56,7 @@ class Commission with TransactionCommon {
         "amount": amount.toJson(),
         "signature": signature,
         "txId": txId,
+        "assetId": assetId,
+        "isTwo": isTwo
       };
 }

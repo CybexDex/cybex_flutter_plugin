@@ -87,7 +87,9 @@ public class CybexFlutterPlugin implements MethodCallHandler {
               jsonObject.get("fee").getAsJsonObject().get("amount").getAsLong(),
               "",
               "",
-              ""
+              "",
+              jsonObject.get("assetId").getAsString(),
+              jsonObject.get("isTwo").getAsBoolean()
               );
       result.success(transfer);
     } else if (call.method.equals("resetDefaultKey")) {
