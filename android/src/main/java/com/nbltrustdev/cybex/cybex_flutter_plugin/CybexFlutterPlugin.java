@@ -85,13 +85,13 @@ public class CybexFlutterPlugin implements MethodCallHandler {
               jsonObject.get("fee").getAsJsonObject().get("assetId").getAsString(),
               jsonObject.get("amount").getAsJsonObject().get("amount").getAsLong(),
               jsonObject.get("fee").getAsJsonObject().get("amount").getAsLong(),
-              jsonObject.get("memo") != null ? jsonObject.get("memo").getAsString() : null,
-              jsonObject.get("toMemoKey") != null ? jsonObject.get("toMemoKey").getAsString() : null,
-              jsonObject.get("fromMemoKey") != null ? jsonObject.get("fromMemoKey").getAsString() : null,
-              jsonObject.get("assetId") != null ?  jsonObject.get("assetId").getAsString() : null,
+              jsonObject.get("memo").isJsonNull() ? null : jsonObject.get("memo").getAsString(),
+              jsonObject.get("toMemoKey").isJsonNull() ? null : jsonObject.get("toMemoKey").getAsString(),
+              jsonObject.get("fromMemoKey").isJsonNull() ? null : jsonObject.get("fromMemoKey").getAsString(),
+              jsonObject.get("assetId").isJsonNull() ?  null : jsonObject.get("assetId").getAsString(),
               jsonObject.get("isTwo").getAsBoolean(),
-              jsonObject.get("gatewayAssetId") != null ? jsonObject.get("gatewayAssetId").getAsString() : null,
-              jsonObject.get("gatewayMemoKey") != null ? jsonObject.get("gatewayMemoKey").getAsString() : null
+              jsonObject.get("gatewayAssetId").isJsonNull() ? null : jsonObject.get("gatewayAssetId").getAsString(),
+              jsonObject.get("gatewayMemoKey").isJsonNull() ? null : jsonObject.get("gatewayMemoKey").getAsString()
               );
       result.success(transfer);
     } else if (call.method.equals("resetDefaultKey")) {
