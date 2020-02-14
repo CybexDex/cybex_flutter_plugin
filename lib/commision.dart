@@ -14,6 +14,11 @@ class Commission with TransactionCommon {
   String txId;
   String assetId;
   bool isTwo;
+  String fromMemoKey;
+  String toMemoKey;
+  String gatewayMemoKey;
+  String gatewayAssetId;
+  String memo;
 
   Commission(
       {this.refBlockNum,
@@ -26,7 +31,12 @@ class Commission with TransactionCommon {
       this.signature,
       this.txId,
       this.assetId,
-      this.isTwo});
+      this.isTwo,
+      this.fromMemoKey,
+      this.gatewayAssetId,
+      this.gatewayMemoKey,
+      this.toMemoKey,
+      this.memo});
 
   factory Commission.fromRawJson(String str) =>
       Commission.fromJson(json.decode(str));
@@ -57,6 +67,11 @@ class Commission with TransactionCommon {
         "signature": signature,
         "txId": txId,
         "assetId": assetId,
-        "isTwo": isTwo
+        "isTwo": isTwo,
+        "fromMemoKey": fromMemoKey,
+        "toMemoKey": toMemoKey,
+        "gatewayAssetId": gatewayAssetId,
+        "memo": memo,
+        "gatewayMemoKey": gatewayMemoKey
       };
 }
