@@ -52,6 +52,7 @@ class _MyAppState extends State<MyApp> {
 
       String keys = await CybexFlutterPlugin.getUserKeyWith(
           "cybex-test", "cybextest123456");
+      print(keys);
       // Order signedOpOrder =
       //     await CybexFlutterPlugin.limitOrderCreateOperation(order, true);
       // platformVersion = signedOpOrder.toRawJson();

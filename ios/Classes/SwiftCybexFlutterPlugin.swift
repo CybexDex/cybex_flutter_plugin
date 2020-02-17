@@ -110,7 +110,7 @@ public class SwiftCybexFlutterPlugin: NSObject, FlutterPlugin {
     }
 
     func getTransferOperation(json: JSON, chainId: String, blockId:String) -> String {
-        let res = BitShareCoordinator.getTransaction(json["refBlockNum"].int32Value, block_id: blockId, expiration: json["txExpiration"].doubleValue, chain_id: chainId, from_user_id: json["from"].int32Value, to_user_id: json["to"].int32Value, asset_id: json["amount"]["assetId"].int32Value, receive_asset_id: json["amount"]["assetId"].int32Value, amount: json["amount"]["amount"].int64Value, fee_id: json["fee"]["assetId"].int32Value, fee_amount: json["fee"]["amount"].int64Value, memo: "", from_memo_key: "", to_memo_key: "")
+        let res = BitShareCoordinator.getTransactionForBBB(json["refBlockNum"].int32Value, block_id: blockId, expiration: json["txExpiration"].doubleValue, chain_id: chainId, from_user_id: json["from"].int32Value, to_user_id: json["to"].int32Value, asset_id: json["amount"]["assetId"].int32Value, receive_asset_id: json["amount"]["assetId"].int32Value, amount: json["amount"]["amount"].int64Value, fee_id: json["fee"]["assetId"].int32Value, fee_amount: json["fee"]["amount"].int64Value, memo: json["memo"].stringValue, from_memo_key: json["fromMemoKey"].stringValue, to_memo_key: json["toMemoKey"].stringValue, isTwo: json["isTwo"].boolValue, useGateway: json["useGateway"].boolValue, bbb_asset_id: json["assetId"].int32Value, gateway_account_id: json["gatewayAssetId"].int32Value, gateway_memo_key: json["gatewayMemoKey"].stringValue)
         return res
     }
 }

@@ -14,6 +14,7 @@ class Commission with TransactionCommon {
   String txId;
   String assetId;
   bool isTwo;
+  bool useGateway;
   String fromMemoKey;
   String toMemoKey;
   String gatewayMemoKey;
@@ -30,6 +31,7 @@ class Commission with TransactionCommon {
       this.amount,
       this.signature,
       this.txId,
+      this.useGateway,
       this.assetId,
       this.isTwo,
       this.fromMemoKey,
@@ -68,6 +70,7 @@ class Commission with TransactionCommon {
         "txId": txId,
         "assetId": assetId,
         "isTwo": isTwo,
+        "useGateway": gatewayAssetId != null,
         "fromMemoKey": fromMemoKey,
         "toMemoKey": toMemoKey,
         "gatewayAssetId": gatewayAssetId,
