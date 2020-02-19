@@ -153,6 +153,13 @@ class CybexFlutterPlugin {
       commission.to = Utils.wrapId(commission.to, ACCOUNT);
       commission.amount.assetId =
           Utils.wrapId(commission.amount.assetId, ASSET);
+      if (commission.assetId != null) {
+        commission.assetId = Utils.wrapId(commission.assetId, ASSET);
+      }
+      if (commission.gatewayAssetId != null) {
+        commission.gatewayAssetId =
+            Utils.wrapId(commission.gatewayAssetId, ACCOUNT);
+      }
     }
     final String trx = await _channel.invokeMethod(CybexFlutterPlugin.transfer,
         [commission.toRawJson(), commission.chainid, commission.refBlockId]);
